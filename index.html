@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lớp Học Buttercup - Đánh Thức Tiềm Năng Ngôn Ngữ</title>
+    <meta name="description" content="Khám phá lớp học tiếng Anh Buttercup tại LuvKids. Môi trường học tập gần gũi giúp bé phát triển ngôn ngữ tự nhiên và tự tin.">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #FACC15;
+            --primary-dark: #EAB308;
+            --primary-light: #FEF08A;
+            --secondary: #0EA5E9;
+            --text-dark: #0F172A;
+            --text-light: #475569;
+            --bg-main: #F8FAFC;
+            --bg-white: #FFFFFF;
+            --radius-md: 12px;
+            --radius-lg: 24px;
+            --radius-full: 9999px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', Arial, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Outfit', Arial, sans-serif;
+            font-weight: 700;
+            line-height: 1.2;
+            color: var(--text-dark);
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 28px;
+            border-radius: var(--radius-full);
+            font-family: 'Outfit', Arial, sans-serif;
+            font-weight: 600;
+            font-size: 1.125rem;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            outline: none;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--text-dark);
+            box-shadow: 0 4px 14px 0 rgba(250, 204, 21, 0.39);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(250, 204, 21, 0.5);
+            background: linear-gradient(135deg, var(--primary-light), var(--primary));
+        }
+
+        .btn-secondary {
+            background-color: var(--bg-white);
+            color: var(--text-dark);
+            box-shadow: var(--shadow-sm);
+            border: 2px solid var(--text-dark);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--text-dark);
+            color: var(--bg-white);
+            transform: translateY(-2px);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0); }
+        }
+
+        .animate-fade-in-up {
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+        }
+
+        .delay-100 { animation-delay: 100ms; }
+        .delay-200 { animation-delay: 200ms; }
+        .delay-300 { animation-delay: 300ms; }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px);
+            z-index: 1000;
+            box-shadow: var(--shadow-sm);
+            padding: 12px 0;
+            transition: var(--transition);
+        }
+
+        .navbar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .logo {
+            font-family: 'Outfit', Arial, sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
+        }
+
+        .logo img {
+            width: 74px;
+            height: 54px;
+            object-fit: contain;
+            display: block;
+            flex: 0 0 auto;
+        }
+
+        .logo span {
+            color: var(--primary-dark);
+            white-space: nowrap;
+        }
+
+        .logo-icon {
+            background: var(--primary);
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            transform: rotate(-10deg);
+        }
+
+        .hero {
+            padding: 160px 0 100px;
+            position: relative;
+            overflow: hidden;
+            background: radial-gradient(circle at top right, rgba(250, 204, 21, 0.1), transparent 40%),
+                        radial-gradient(circle at bottom left, rgba(14, 165, 233, 0.05), transparent 40%);
+        }
+
+        .hero .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .hero-content h1 {
+            font-size: 4rem;
+            margin-bottom: 24px;
+            letter-spacing: 0;
+        }
+
+        .hero-content h1 span {
+            color: var(--primary-dark);
+            position: relative;
+            display: inline-block;
+        }
+
+        .hero-content h1 span::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            left: 0;
+            width: 100%;
+            height: 12px;
+            background-color: var(--primary);
+            opacity: 0.3;
+            border-radius: 4px;
+            z-index: -1;
+            transform: skewX(-15deg);
+        }
+
+        .hero-content p {
+            font-size: 1.25rem;
+            color: var(--text-light);
+            margin-bottom: 40px;
+            max-width: 90%;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .hero-image-wrapper {
+            position: relative;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .hero-image {
+            width: 100%;
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+            box-shadow: var(--shadow-xl);
+            border: 8px solid white;
+            object-fit: cover;
+            aspect-ratio: 4/3;
+        }
+
+        .floating-badge {
+            position: absolute;
+            background: white;
+            padding: 16px 24px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            bottom: 40px;
+            left: -30px;
+            animation: float 5s ease-in-out infinite reverse;
+        }
+
+        .badge-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--primary-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--primary-dark);
+        }
+
+        .badge-text h4 {
+            font-size: 1.125rem;
+            margin-bottom: 2px;
+        }
+
+        .badge-text p {
+            font-size: 0.875rem;
+            color: var(--text-light);
+            margin: 0;
+        }
+
+        .features {
+            padding: 100px 0;
+            background: var(--bg-white);
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 64px;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+        }
+
+        .section-header p {
+            font-size: 1.125rem;
+            color: var(--text-light);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 32px;
+        }
+
+        .feature-card {
+            background: var(--bg-main);
+            padding: 40px 32px;
+            border-radius: var(--radius-lg);
+            transition: var(--transition);
+            border: 1px solid rgba(0,0,0,0.03);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-xl);
+            background: var(--bg-white);
+        }
+
+        .feature-icon {
+            width: 64px;
+            height: 64px;
+            background: var(--primary-light);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: var(--primary-dark);
+            margin-bottom: 24px;
+            transition: var(--transition);
+        }
+
+        .feature-card:hover .feature-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+        }
+
+        .feature-card p {
+            color: var(--text-light);
+            font-size: 1rem;
+        }
+
+        .about {
+            padding: 100px 0;
+            position: relative;
+        }
+
+        .about .container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .about-image-wrapper {
+            position: relative;
+        }
+
+        .about-image {
+            width: 100%;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            object-fit: cover;
+            aspect-ratio: 4/3;
+        }
+
+        .about-content ul {
+            margin-top: 32px;
+            display: grid;
+            gap: 16px;
+        }
+
+        .about-content li {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            font-size: 1.125rem;
+            color: var(--text-dark);
+        }
+
+        .about-content li i {
+            color: #10B981;
+            font-size: 1.25rem;
+            margin-top: 4px;
+        }
+
+        .class-photos {
+            padding: 100px 0;
+            background: var(--bg-white);
+        }
+
+        .photos-grid {
+            display: grid;
+            grid-template-columns: 0.9fr 1.1fr;
+            gap: 24px;
+            align-items: stretch;
+        }
+
+        .photo-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            background: var(--bg-main);
+        }
+
+        .photo-card img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .photo-card:first-child {
+            aspect-ratio: 3/4;
+        }
+
+        .photo-card:last-child {
+            aspect-ratio: 16/9;
+        }
+
+        .photo-card:hover img {
+            transform: scale(1.04);
+        }
+
+        .cta-section {
+            padding: 100px 0;
+            background: var(--text-dark);
+            color: var(--bg-white);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(250, 204, 21, 0.15) 0%, transparent 50%);
+            z-index: 0;
+        }
+
+        .cta-container {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .cta-text h2 {
+            font-size: 3rem;
+            color: var(--bg-white);
+            margin-bottom: 24px;
+        }
+
+        .cta-text p {
+            font-size: 1.25rem;
+            color: #94A3B8;
+            margin-bottom: 32px;
+        }
+
+        .registration-form {
+            background: var(--bg-white);
+            padding: 48px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-xl);
+            color: var(--text-dark);
+        }
+
+        .registration-form h3 {
+            font-size: 1.75rem;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 16px;
+            border: 2px solid #E2E8F0;
+            border-radius: var(--radius-md);
+            font-family: 'Inter', Arial, sans-serif;
+            font-size: 1rem;
+            transition: var(--transition);
+            background: #F8FAFC;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: var(--bg-white);
+            box-shadow: 0 0 0 4px rgba(250, 204, 21, 0.1);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 18px;
+            font-size: 1.25rem;
+            margin-top: 16px;
+        }
+
+        footer {
+            background: var(--bg-white);
+            padding: 60px 0 40px;
+            border-top: 1px solid #E2E8F0;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-logo {
+            font-size: 1.5rem;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-logo img {
+            width: 76px;
+            height: 56px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .footer-text {
+            color: var(--text-light);
+            margin-bottom: 24px;
+            max-width: 400px;
+        }
+
+        .footer-links h4 {
+            font-size: 1.125rem;
+            margin-bottom: 20px;
+        }
+
+        .footer-links ul {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .footer-links a {
+            color: var(--text-light);
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-dark);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 32px;
+            border-top: 1px solid #E2E8F0;
+            color: var(--text-light);
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 992px) {
+            .hero .container, .about .container, .cta-container {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-content {
+                text-align: center;
+            }
+
+            .hero-content h1 {
+                font-size: 3rem;
+            }
+
+            .hero-content p {
+                margin: 0 auto 32px;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+
+            .about-content {
+                order: -1;
+            }
+
+            .photos-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .photo-card:first-child,
+            .photo-card:last-child {
+                aspect-ratio: 4/3;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar .container {
+                gap: 12px;
+            }
+
+            .logo {
+                font-size: 1.05rem;
+                gap: 8px;
+            }
+
+            .logo img {
+                width: 58px;
+                height: 42px;
+            }
+
+            .navbar .btn {
+                padding: 10px 14px;
+                font-size: 0.95rem;
+            }
+
+            .hero {
+                padding: 120px 0 60px;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .section-header h2 {
+                font-size: 2rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+
+            .cta-text h2 {
+                font-size: 2.5rem;
+            }
+
+            .registration-form {
+                padding: 32px 24px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar .container {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+            }
+
+            .floating-badge {
+                left: 10px;
+                right: 10px;
+                bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container">
+            <a href="#" class="logo" aria-label="Buttercup - LuvKids">
+                <img src="assets/luvkids-logo.jpg" alt="LuvKids English Learn Grow">
+                <span>Buttercup - LuvKids</span>
+            </a>
+            <a href="#register" class="btn btn-primary">Đăng Ký Học Thử</a>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <div class="container">
+            <div class="hero-content animate-fade-in-up">
+                <h1>Khơi Dậy Tiềm Năng Tiếng Anh Của Bé Cùng <span>Buttercup</span></h1>
+                <p>Khám phá phương pháp học tiếng Anh nhúng chuẩn quốc tế ngay tại LuvKids. Giúp trẻ mầm non làm quen với tiếng Anh tự nhiên như ngôn ngữ thứ hai.</p>
+                <div class="hero-buttons">
+                    <a href="#register" class="btn btn-primary">
+                        Đăng Ký Khám Phá Ngay <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+                    <a href="#about" class="btn btn-secondary">Tìm Hiểu Thêm</a>
+                </div>
+            </div>
+            <div class="hero-image-wrapper animate-fade-in-up delay-200">
+                <img src="assets/buttercup-class-activity-2.jpg" alt="Lớp học Buttercup tại LuvKids" class="hero-image">
+                <div class="floating-badge">
+                    <div class="badge-icon"><i class="fa-solid fa-star"></i></div>
+                    <div class="badge-text">
+                        <h4>Chuẩn Quốc Tế</h4>
+                        <p>Học qua tương tác và trải nghiệm</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="features" id="about">
+        <div class="container">
+            <div class="section-header animate-fade-in-up">
+                <h2>Tại Sao Nên Chọn Lớp Học Buttercup?</h2>
+                <p>Chương trình được thiết kế đặc biệt giúp trẻ tiếp thu ngôn ngữ tự nhiên, vui vẻ và không áp lực.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card animate-fade-in-up delay-100">
+                    <div class="feature-icon"><i class="fa-solid fa-earth-americas"></i></div>
+                    <h3>Môi Trường Tiếng Anh Tự Nhiên</h3>
+                    <p>Trẻ được tiếp xúc với tiếng Anh qua hoạt động, trò chơi và giao tiếp liên tục để hình thành phản xạ tự nhiên.</p>
+                </div>
+                <div class="feature-card animate-fade-in-up delay-200">
+                    <div class="feature-icon"><i class="fa-solid fa-brain"></i></div>
+                    <h3>Phương Pháp 2 Giai Đoạn</h3>
+                    <p>Kết hợp giữa nạp ngôn ngữ qua nghe, nhìn, vận động và thực hành nói qua các tình huống tương tác phù hợp với trẻ.</p>
+                </div>
+                <div class="feature-card animate-fade-in-up delay-300">
+                    <div class="feature-icon"><i class="fa-solid fa-chalkboard-user"></i></div>
+                    <h3>Giáo Viên Tận Tâm</h3>
+                    <p>Đội ngũ giáo viên đồng hành sát sao, thấu hiểu tâm lý trẻ và tạo không khí học tập an toàn, tích cực.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="about">
+        <div class="container">
+            <div class="about-image-wrapper animate-fade-in-up">
+                <img src="assets/buttercup-class-activity-1.jpg" alt="Giáo viên và học sinh trong lớp Buttercup" class="about-image">
+            </div>
+            <div class="about-content animate-fade-in-up delay-200">
+                <h2>Hành Trình Học Tiếng Anh Vui Vẻ Tại LuvKids</h2>
+                <p style="font-size: 1.125rem; color: var(--text-light); margin-top: 16px;">
+                    Với chương trình Buttercup, LuvKids mang đến trải nghiệm học tập gần gũi, nhiều tương tác và phù hợp với từng độ tuổi của bé.
+                </p>
+                <ul>
+                    <li>
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span><strong>Cơ sở vật chất thân thiện:</strong> Lớp học an toàn, sáng sủa và có đủ học cụ cho các hoạt động ngôn ngữ.</span>
+                    </li>
+                    <li>
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span><strong>Sĩ số nhỏ:</strong> Giáo viên dễ quan sát, hỗ trợ và khuyến khích từng bé tham gia vào giờ học.</span>
+                    </li>
+                    <li>
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span><strong>Kết nối với phụ huynh:</strong> Phụ huynh được cập nhật quá trình học tập để đồng hành cùng con tại nhà.</span>
+                    </li>
+                    <li>
+                        <i class="fa-solid fa-circle-check"></i>
+                        <span><strong>Học qua vui chơi:</strong> Âm nhạc, thẻ hình, kể chuyện và trò chơi giúp bé yêu thích tiếng Anh hơn mỗi ngày.</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="class-photos">
+        <div class="container">
+            <div class="section-header animate-fade-in-up">
+                <h2>Hình Ảnh Lớp Học Thực Tế</h2>
+                <p>Không gian học tập gần gũi, nhiều hoạt động tương tác giúp các bé tự tin sử dụng tiếng Anh mỗi ngày.</p>
+            </div>
+            <div class="photos-grid">
+                <figure class="photo-card animate-fade-in-up delay-100">
+                    <img src="assets/buttercup-class-activity-1.jpg" alt="Các bé tham gia hoạt động với thẻ hình tại lớp Buttercup">
+                </figure>
+                <figure class="photo-card animate-fade-in-up delay-200">
+                    <img src="assets/buttercup-class-activity-2.jpg" alt="Giờ học màu sắc tiếng Anh tại lớp Buttercup">
+                </figure>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section" id="register">
+        <div class="container cta-container">
+            <div class="cta-text animate-fade-in-up">
+                <h2>Bắt Đầu Hành Trình Cùng Con Ngay Hôm Nay!</h2>
+                <p>Đăng ký để nhận tư vấn miễn phí và một buổi học thử trải nghiệm chương trình Buttercup tại LuvKids.</p>
+                <div style="display: flex; gap: 24px; margin-top: 40px; flex-wrap: wrap;">
+                    <div>
+                        <h4 style="font-size: 2rem; color: var(--primary);">500+</h4>
+                        <p style="color: white; font-size: 1rem;">Phụ huynh tin tưởng</p>
+                    </div>
+                    <div>
+                        <h4 style="font-size: 2rem; color: var(--primary);">100%</h4>
+                        <p style="color: white; font-size: 1rem;">Trẻ hào hứng đi học</p>
+                    </div>
+                </div>
+            </div>
+            <div class="form-wrapper animate-fade-in-up delay-200">
+                <form class="registration-form" id="registrationForm">
+                    <h3>Đăng Ký Học Thử</h3>
+                    <div class="form-group">
+                        <label for="parentName">Họ tên phụ huynh *</label>
+                        <input type="text" id="parentName" class="form-control" placeholder="Nhập họ tên của bạn" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Số điện thoại *</label>
+                        <input type="tel" id="phone" class="form-control" placeholder="Nhập số điện thoại" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="childAge">Độ tuổi của bé *</label>
+                        <select id="childAge" class="form-control" required>
+                            <option value="" disabled selected>Chọn độ tuổi</option>
+                            <option value="3-4">3 - 4 tuổi</option>
+                            <option value="4-5">4 - 5 tuổi</option>
+                            <option value="5-6">5 - 6 tuổi</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary submit-btn">Gửi Đăng Ký Ngay</button>
+                    <p style="text-align: center; font-size: 0.875rem; color: var(--text-light); margin-top: 16px;">
+                        Thông tin của bạn được bảo mật an toàn.
+                    </p>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div>
+                    <div class="footer-logo">
+                        <img src="assets/luvkids-logo.jpg" alt="LuvKids English Learn Grow">
+                        <span style="font-family: 'Outfit', Arial, sans-serif; font-weight: 700; color: var(--text-dark);">Buttercup - LuvKids</span>
+                    </div>
+                    <p class="footer-text">Nơi khơi nguồn tình yêu ngôn ngữ cho trẻ em. LuvKids đồng hành cùng bé trong hành trình học tiếng Anh tự nhiên, vui vẻ và tự tin.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Liên Hệ</h4>
+                    <ul>
+                        <li><i class="fa-solid fa-location-dot" style="width: 20px; color: var(--primary-dark);"></i> Tổ dân phố Việt Tiến, phường Tân Tiến, tỉnh Bắc Ninh</li>
+                        <li><i class="fa-solid fa-phone" style="width: 20px; color: var(--primary-dark);"></i> +84 989 111 593</li>
+                        <li><i class="fa-solid fa-envelope" style="width: 20px; color: var(--primary-dark);"></i> tienganhluvkids@gmail.com</li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Kết Nối</h4>
+                    <div style="display: flex; gap: 16px; margin-top: 8px;">
+                        <a href="#" style="font-size: 1.5rem;" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+                        <a href="#" style="font-size: 1.5rem;" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+                        <a href="#" style="font-size: 1.5rem;" aria-label="TikTok"><i class="fa-brands fa-tiktok"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2026 Buttercup - LuvKids. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.animate-fade-in-up').forEach(el => {
+                observer.observe(el);
+            });
+
+            const form = document.getElementById('registrationForm');
+            const submitButton = form.querySelector('.submit-btn');
+
+            form.addEventListener('submit', async (event) => {
+                event.preventDefault();
+
+                const payload = {
+                    parentName: document.getElementById('parentName').value.trim(),
+                    phone: document.getElementById('phone').value.trim(),
+                    childAge: document.getElementById('childAge').value
+                };
+
+                submitButton.disabled = true;
+                submitButton.textContent = 'Đang gửi...';
+
+                const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxWeOP_3kvuRVjBrY__1cwQ9xVP-9Bnu7IXyrIdhVC1mm6OHiuaYwVE1Np3cRMGYak/exec';
+                try {
+                    const response = await fetch(GOOGLE_SCRIPT_URL, {
+                        method: 'POST',
+                        mode: 'cors',
+                        headers: {
+                            'Content-Type': 'text/plain;charset=utf-8'
+                        },
+                        body: JSON.stringify(payload)
+                    });
+
+                    const res = await response.json();
+                    if (res.result !== 'success') {
+                        throw new Error(res.error || 'Submit failed');
+                    }
+
+                    form.reset();
+                    alert('Cảm ơn bạn! LuvKids sẽ liên hệ với bạn trong thời gian sớm nhất.');
+                } catch (error) {
+                    alert('Hiện chưa gửi được thông tin. Vui lòng gọi +84 989 111 593 hoặc thử lại sau.');
+                } finally {
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Gửi Đăng Ký Ngay';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
