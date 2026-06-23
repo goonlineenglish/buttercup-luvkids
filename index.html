@@ -567,7 +567,7 @@
     </div>
 
     <!-- Active Form Steps -->
-    <form id="discovery-form" onsubmit="event.preventDefault(); submitForm();" style="display: none;">
+    <form id="discovery-form" novalidate onsubmit="event.preventDefault(); submitForm();" style="display: none;">
       
       <!-- Progress Bar -->
       <div class="progress-bar-container">
@@ -1369,7 +1369,14 @@
     }
 
     function submitForm() {
-      if (!validateStep(currentStep)) return;
+      if (!validateStep(currentStep)) {
+        // Scroll to the first error field so user knows what to fix
+        const firstError = document.querySelector(`#step-${currentStep} .question-group.error`);
+        if (firstError) {
+          firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        return;
+      }
 
       const submitBtn = document.getElementById('btn-submit');
       submitBtn.classList.add('btn-loading');
